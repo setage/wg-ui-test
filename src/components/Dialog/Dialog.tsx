@@ -1,11 +1,67 @@
+import { FormEvent, useState } from 'react';
+import { IItem } from '../../types';
 import ButtonGroup from '../ButtonGroup/ButtonGroup';
 import SelectedItem from '../SelectedItem/SelectedItem';
 
+import styles from './Dialog.module.css';
+import { ELEMENTS_LIST } from '../../constants';
+
 interface IDialogProps {
   toggle: () => void;
+  save: (items: IItem[]) => void;
+  selectedItems: IItem[];
 }
 
-function Dialog({ toggle }: IDialogProps) {
+function Dialog({ toggle, save, selectedItems }: IDialogProps) {
+  const [currentlySelectedItems, setCurrentlySelectedItems] =
+    useState<IItem[]>(selectedItems);
+
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
+    save(currentlySelectedItems);
+  };
+
+  const addItem = (item: IItem) => {
+    currentlySelectedItems.push(item);
+    setCurrentlySelectedItems([...currentlySelectedItems]);
+  };
+
+  const removeItem = (item: IItem) => {
+    setCurrentlySelectedItems(
+      currentlySelectedItems.filter(
+        (selectedItem) => selectedItem.value !== item.value
+      )
+    );
+  };
+
+  const renderItems = ELEMENTS_LIST.map((item) => {
+    const isChecked = !!currentlySelectedItems.find(
+      (selectedItem) => selectedItem.value === item.value
+    );
+
+    return (
+      <div className={styles.item} key={`element-${item.value}`}>
+        <input
+          type="checkbox"
+          name={`element-${item.value}`}
+          id={`element-${item.value}`}
+          value={item.value}
+          checked={isChecked}
+          onChange={isChecked ? () => removeItem(item) : () => addItem(item)}
+        />{' '}
+        <label htmlFor={`element-${item.value}`}>{item.name}</label>
+      </div>
+    );
+  });
+
+  const renderSelectedItems = currentlySelectedItems.map((item) => (
+    <SelectedItem
+      key={item.value}
+      name={item.name}
+      remove={() => removeItem(item)}
+    />
+  ));
+
   return (
     <form>
       <div>
@@ -29,19 +85,15 @@ function Dialog({ toggle }: IDialogProps) {
         </div>
       </div>
 
-      <div>
-        <input type="checkbox" name="element-1" id="element-1" value={1} />{' '}
-        <label htmlFor="element-1">Element 1</label>
-      </div>
+      <div className={styles.list}>{renderItems}</div>
 
       <p>Currently selected items:</p>
-      <ButtonGroup>
-        <SelectedItem name="Element 5" />
-        <SelectedItem name="Element 51" />
-      </ButtonGroup>
+      <ButtonGroup>{renderSelectedItems}</ButtonGroup>
 
       <ButtonGroup>
-        <button type="submit">Save</button>
+        <button type="submit" onClick={handleSave}>
+          Save
+        </button>
         <button type="reset" onClick={toggle}>
           Cancel
         </button>

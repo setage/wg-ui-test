@@ -9,3 +9,16 @@
 .item {
   margin: 0.5rem;
 }
+.item_disabled {
+  opacity: .6;
+}
+
+.checkbox,
+.label {
+  cursor: pointer;
+}
+
+.item_disabled .checkbox,
+.item_disabled .label {
+  cursor: not-allowed;
+}

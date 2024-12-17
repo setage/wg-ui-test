@@ -5,6 +5,7 @@ import SelectedItem from '../SelectedItem/SelectedItem';
 
 import styles from './Dialog.module.css';
 import { ELEMENTS_LIST } from '../../constants';
+import clsx from 'clsx';
 
 interface IDialogProps {
   toggle: () => void;
@@ -22,6 +23,8 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
   };
 
   const addItem = (item: IItem) => {
+    if (currentlySelectedItems.length >= 3) return;
+
     currentlySelectedItems.push(item);
     setCurrentlySelectedItems([...currentlySelectedItems]);
   };
@@ -39,17 +42,27 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
       (selectedItem) => selectedItem.value === item.value
     );
 
+    const isDisabled = currentlySelectedItems.length === 3 && !isChecked;
+
+    const itemClassName = clsx(styles.item, {
+      [styles.item_disabled]: isDisabled,
+    });
+
     return (
-      <div className={styles.item} key={`element-${item.value}`}>
+      <div className={itemClassName} key={`element-${item.value}`}>
         <input
+          className={styles.checkbox}
           type="checkbox"
           name={`element-${item.value}`}
           id={`element-${item.value}`}
           value={item.value}
           checked={isChecked}
+          disabled={isDisabled}
           onChange={isChecked ? () => removeItem(item) : () => addItem(item)}
         />{' '}
-        <label htmlFor={`element-${item.value}`}>{item.name}</label>
+        <label className={styles.label} htmlFor={`element-${item.value}`}>
+          {item.name}
+        </label>
       </div>
     );
   });

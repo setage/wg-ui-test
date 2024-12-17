@@ -1,4 +1,3 @@
-import { IItem } from '../../types';
 import styles from './SelectedItem.module.css';
 
 interface ISelectedItem {

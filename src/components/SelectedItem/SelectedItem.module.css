@@ -1,0 +1,12 @@
+.base {
+  display: inline-flex;
+  padding: .5rem;
+  background-color: #000;
+  color: #fff;
+}
+
+.close {
+  padding: .25rem;
+  border-left: 1px solid #ddd;
+  cursor: pointer;
+}

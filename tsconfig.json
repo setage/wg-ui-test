@@ -22,5 +22,17 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": ["react-app"],
+    "rules": {
+      "@stylistic/jsx-quotes": ["error", "prefer-double"]
+    },
+    "overrides": [
+      {
+        "files": ["**/*.ts?(x)"],
+        "rules": {}
+      }
+    ]
+  }
 }

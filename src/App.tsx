@@ -1,24 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SelectedItem from "./components/SelectedItem/SelectedItem";
+import ButtonGroup from "./components/ButtonGroup/ButtonGroup";
+import Dialog from "./components/Dialog/Dialog";
+
+import styles from "./App.module.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.base}>
+      <h1>Select items</h1>
+      <div>
+        <p>You currently have 2 selected items</p>
+        <ButtonGroup>
+          <SelectedItem name="Element 5" />
+          <SelectedItem name="Element 51" />
+        </ButtonGroup>
+
+        <ButtonGroup>
+          <button>Change my choice</button>
+        </ButtonGroup>
+      </div>
+
+      {/* <Dialog /> */}
     </div>
   );
 }

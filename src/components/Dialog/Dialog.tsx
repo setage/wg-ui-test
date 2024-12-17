@@ -1,12 +1,16 @@
-import ButtonGroup from "../ButtonGroup/ButtonGroup";
-import SelectedItem from "../SelectedItem/SelectedItem";
+import ButtonGroup from '../ButtonGroup/ButtonGroup';
+import SelectedItem from '../SelectedItem/SelectedItem';
 
-function Dialog() {
+interface IDialogProps {
+  toggle: () => void;
+}
+
+function Dialog({ toggle }: IDialogProps) {
   return (
     <form>
       <div>
         <h1>Select items</h1>
-        <button>x</button>
+        <button onClick={toggle}>x</button>
       </div>
 
       <div>
@@ -18,15 +22,15 @@ function Dialog() {
           <label htmlFor="filter">Filter</label>
           <select id="filter" name="filter">
             <option value="">No filter</option>
-            <option value="10">{">10"}</option>
-            <option value="100">{">100"}</option>
-            <option value="200">{">200"}</option>
+            <option value="10">{'>10'}</option>
+            <option value="100">{'>100'}</option>
+            <option value="200">{'>200'}</option>
           </select>
         </div>
       </div>
 
       <div>
-        <input type="checkbox" name="element-1" id="element-1" value={1} />{" "}
+        <input type="checkbox" name="element-1" id="element-1" value={1} />{' '}
         <label htmlFor="element-1">Element 1</label>
       </div>
 
@@ -38,7 +42,9 @@ function Dialog() {
 
       <ButtonGroup>
         <button type="submit">Save</button>
-        <button type="reset">Cancel</button>
+        <button type="reset" onClick={toggle}>
+          Cancel
+        </button>
       </ButtonGroup>
     </form>
   );

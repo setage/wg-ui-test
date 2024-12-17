@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { IItem } from '../../types';
 import ButtonGroup from '../ButtonGroup/ButtonGroup';
 import SelectedItem from '../SelectedItem/SelectedItem';
@@ -14,8 +14,11 @@ interface IDialogProps {
 }
 
 function Dialog({ toggle, save, selectedItems }: IDialogProps) {
+  const [availableItems, setAvailableItems] = useState<IItem[]>(ELEMENTS_LIST);
   const [currentlySelectedItems, setCurrentlySelectedItems] =
     useState<IItem[]>(selectedItems);
+  const [filterValue, setFilterValue] = useState('');
+  const [searchSubstring, setSearchSubstring] = useState('');
 
   const handleSave = (e: FormEvent) => {
     e.preventDefault();
@@ -37,7 +40,39 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
     );
   };
 
-  const renderItems = ELEMENTS_LIST.map((item) => {
+  const handleSearch = (substring: string) => {
+    setSearchSubstring(substring);
+  };
+
+  const handleFilter = (value: string) => {
+    setFilterValue(value);
+  };
+
+  useEffect(() => {
+    if (!filterValue && !searchSubstring) {
+      setAvailableItems(ELEMENTS_LIST);
+
+      return;
+    }
+
+    let filteredItems = availableItems;
+
+    if (filterValue) {
+      filteredItems = ELEMENTS_LIST.filter(
+        (item) => item.value > Number(filterValue)
+      );
+    }
+
+    if (searchSubstring) {
+      filteredItems = filteredItems.filter((item) =>
+        item.name.includes(searchSubstring)
+      );
+    }
+
+    setAvailableItems(filteredItems);
+  }, [searchSubstring, filterValue]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const renderItems = availableItems.map((item) => {
     const isChecked = !!currentlySelectedItems.find(
       (selectedItem) => selectedItem.value === item.value
     );
@@ -85,11 +120,20 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
       <div>
         <div>
           <label htmlFor="search">Search</label>
-          <input type="text" id="search" name="search" />
+          <input
+            type="text"
+            id="search"
+            name="search"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
         </div>
         <div>
           <label htmlFor="filter">Filter</label>
-          <select id="filter" name="filter">
+          <select
+            id="filter"
+            name="filter"
+            onChange={(e) => handleFilter(e.target.value)}
+          >
             <option value="">No filter</option>
             <option value="10">{'>10'}</option>
             <option value="100">{'>100'}</option>

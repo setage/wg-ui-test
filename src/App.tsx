@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import SelectedItem from './components/SelectedItem/SelectedItem';
+
+import Button from './components/Button/Button';
 import ButtonGroup from './components/ButtonGroup/ButtonGroup';
 import Dialog from './components/Dialog/Dialog';
+import SelectedItem from './components/SelectedItem/SelectedItem';
 
-import styles from './App.module.css';
 import { IItem } from './types';
 
+import styles from './App.module.css';
+
 function App() {
-  const [dialogShown, toggleDialog] = useState(false);
   const [selectedItems, setSelectedItems] = useState<IItem[]>([]);
+  const [dialogShown, toggleDialog] = useState(false);
 
   const handleToggleDialog = () => {
     toggleDialog(!dialogShown);
@@ -37,13 +40,15 @@ function App() {
     <div className={styles.base}>
       <h1>Select items</h1>
       <div>
-        <p>{`You currently have ${selectedItems.length} selected items`}</p>
+        <p>{`You currently have ${selectedItems.length} selected ${
+          selectedItems.length === 1 ? 'item' : 'items'
+        }`}</p>
         <ButtonGroup>
           {!!selectedItems.length && renderSelectedItems}
         </ButtonGroup>
 
         <ButtonGroup>
-          <button onClick={handleToggleDialog}>Change my choice</button>
+          <Button handleClick={handleToggleDialog}>Change my choice</Button>
         </ButtonGroup>
       </div>
 

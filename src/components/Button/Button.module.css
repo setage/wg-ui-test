@@ -1,0 +1,17 @@
+.base {
+  height: 30px;
+  min-width: 90px;
+  padding: 0 24px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 14px;
+}
+
+.base_color-confirm {
+  background: #519F03;
+}
+
+.base_color-decline {
+  background: #9F2903;
+}

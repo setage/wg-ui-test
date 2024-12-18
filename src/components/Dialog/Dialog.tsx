@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 
 import { IItem } from '../../types';
@@ -16,7 +17,7 @@ interface IDialogProps {
   selectedItems: IItem[];
 }
 
-function Dialog({ toggle, save, selectedItems }: IDialogProps) {
+const Dialog = observer(({ toggle, save, selectedItems }: IDialogProps) => {
   const [availableItems, setAvailableItems] = useState<IItem[]>(ELEMENTS_LIST);
   const [currentlySelectedItems, setCurrentlySelectedItems] =
     useState<IItem[]>(selectedItems);
@@ -25,6 +26,7 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
 
   const handleSave = () => {
     save(currentlySelectedItems);
+    toggle();
   };
 
   const addItem = (item: IItem) => {
@@ -164,6 +166,6 @@ function Dialog({ toggle, save, selectedItems }: IDialogProps) {
       </div>
     </div>
   );
-}
+});
 
 export default Dialog;
